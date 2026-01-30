@@ -1,1 +1,2 @@
-Module00: Version: 2.1
+Subject versions:
+- module00: v2.1
