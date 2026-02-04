@@ -6,7 +6,7 @@
 #    By: joana <joana@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/02/01 12:11:04 by joana             #+#    #+#              #
-#    Updated: 2026/02/01 12:47:15 by joana            ###   ########.fr        #
+#    Updated: 2026/02/02 12:24:54 by joana            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ class Plant:
         Attributes:
             name (str): the common name of the plant
             height (int): the height of the plant in centimeters
-            age (int): the age of the plant in days
+            days (int): the age of the plant in days
         '''
         self.name = name
         self.height = height
