@@ -1,18 +1,5 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    ft_garden_analytics.py                             :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: joana <joana@student.42.fr>                +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2026/02/03 14:53:42 by joana             #+#    #+#              #
-#    Updated: 2026/02/04 21:26:02 by joana            ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 class Plant:
     '''Represent a Plant and all its attributes'''
-    
     def __init__(self, name: str, height: int) -> None:
         '''Initialize a new Plant with its attributes'''
         self.name = name
@@ -23,11 +10,12 @@ class Plant:
     def get_height(self) -> int:
         '''Get public __height in cm'''
         return self.__height
-        
+
     def check_height(self, height: int) -> None:
         '''Check if height is negative to prevent data corruption'''
         if height < 0:
-            print(f"\nInvalid operation attempted: height {height}cm [REJECTED]")
+            print((f"\nInvalid operation attempted: "
+                  f"height {height}cm [REJECTED]"))
             print("Security: Negative height rejected")
         else:
             self.__height = height
@@ -43,14 +31,18 @@ class Plant:
             print(f"{self.name} grew 1cm")
 
     def __str__(self) -> str:
-        '''Print a formatted string describing the Plant's current attributes'''
+        '''Print a formatted string describing
+        the Plant's current attributes'''
         return f"{self.name}: {self.__height}cm"
 
+
 class FloweringPlant(Plant):
-    '''Represent a single FloweringPlant and inherits Plant attributes'''
-    
+    '''Represent a single FloweringPlant and
+    inherits Plant attributes'''
+
     def __init__(self, name: str, height: int, colour: str) -> None:
-        '''Initialize a new FloweringPlant with inherited Plant attributes and its own'''
+        '''Initialize a new FloweringPlant with inherited
+        Plant attributes and its own'''
         super().__init__(name, height)
         self.__colour = "none"
         self.get_colour(colour)
@@ -61,37 +53,45 @@ class FloweringPlant(Plant):
             self.__colour = colour
             return self.__colour
         elif colour is None:
-            print(f"Invalid operation attempted: colour {self.__colour} [REJECTED]")
+            print((f"Invalid operation attempted: "
+                   f"colour {self.__colour} [REJECTED]"))
 
     def __str__(self) -> str:
-        '''Print a formatted string describing the FloweringPlant's current attributes'''
+        '''Print a formatted string describing the
+        FloweringPlant's current attributes'''
         return f"{super().__str__()}, {self.__colour} flowers (blooming)"
+
 
 class PrizeFlower(FloweringPlant):
     '''Represent a single PrizeFlower and inherits FloweringPlant attributes'''
-
-    def __init__(self, name: str, height: int, colour: str, prize: int) -> None:
-        '''Initialize a new PrizePlant with inherited FloweringPlant attributes and its own'''
+    def __init__(self, name: str, height: int,
+                 colour: str, prize: int) -> None:
+        '''Initialize a new PrizePlant with inherited FloweringPlant
+        attributes and its own'''
         super().__init__(name, height, colour)
         self.__prize = 0
         self.get_prize_points(prize)
 
     def get_prize_points(self, prize: int) -> None:
-        '''Check if prize points are bigger than 0 to prevent data corruption'''
+        '''Check if prize points are bigger than 0
+        to prevent data corruption'''
         if prize > 0:
             self.__prize = prize
             return self.__prize
         else:
-            print(f"Invalid operation attempted: prize points {self.prize} [REJECTED]")
+            print((f"Invalid operation attempted: "
+                   f"prize points {self.prize} [REJECTED]"))
 
     def __str__(self) -> str:
-        '''Print a formatted string describing the PrizeFlower's current attributes'''
+        '''Print a formatted string describing the
+        PrizeFlower's current attributes'''
         return f"{super().__str__()}, Prize points: {self.__prize}"
+
 
 class GardenManager:
     '''Manage multipe gardens and all their plants'''
     total_gardens = 0
-    
+
     def __init__(self, owner: str) -> None:
         '''Initialize an owner's garden with no plants'''
         self.owner = owner
@@ -129,20 +129,24 @@ class GardenManager:
 
         @staticmethod
         def print_plant_stats(plants) -> None:
-            '''Calculate and print counts for regular, flowering, and prize plants'''
+            '''Calculate and print counts for regular,
+            flowering, and prize plants'''
             regular = sum(1 for p in plants if type(p) is Plant)
             flowering = sum(1 for p in plants if type(p) is FloweringPlant)
             prize_flowers = sum(1 for p in plants if type(p) is PrizeFlower)
             total_growth = sum(p.get_growth() for p in plants)
-            print(f"\nPlants added: {len(plants)}, Total growth: {total_growth}cm")
-            print(f"Plant types: {regular} regular, {flowering} flowering, {prize_flowers} prize flowers")
+            print((f"\nPlants added: {len(plants)}, "
+                   f"Total growth: {total_growth}cm"))
+            print((f"Plant types: {regular} regular, {flowering} flowering, "
+                   f"{prize_flowers} prize flowers"))
+
 
 if __name__ == "__main__":
     print("=== Garden Management System Demo ===\n")
     gardens = GardenManager.create_garden_nextwork(["Alice", "Bob"])
     alice_garden = gardens[0]
     bob_garden = gardens[1]
-    
+
     alice_garden.add_plant(Plant("Oak Tree", 100))
     alice_garden.add_plant(FloweringPlant("Rose", 25, "red"))
     alice_garden.add_plant(PrizeFlower("Sunflower", 50, "yellow", 10))
@@ -164,7 +168,7 @@ if __name__ == "__main__":
     print(f"\n=== {alice_garden.owner}'s Garden Report ===")
     print("Plants in garden:")
     for p in alice_garden.plants:
-            print(f"- {p}")
+        print(f"- {p}")
 
     # print(f"\n=== {bob_garden.owner}'s Garden Report ===")
     # print("Plants in garden:")
@@ -174,5 +178,6 @@ if __name__ == "__main__":
     GardenManager.GardenStats.print_plant_stats(alice_garden.plants)
 
     print(f"\nHeight validation test: {alice_garden.validate_heights()}")
-    print(f"Garden Score - {alice_garden.owner}: {alice_score}, {bob_garden.owner}: {bob_score}")
+    print((f"Garden Score - {alice_garden.owner}: {alice_score}, "
+           f"{bob_garden.owner}: {bob_score}"))
     print(f"Total gardens managed: {GardenManager.total_gardens}")

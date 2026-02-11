@@ -1,18 +1,5 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    ft_plant_growth.py                                 :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: joana <joana@student.42.fr>                +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2026/02/01 12:11:04 by joana             #+#    #+#              #
-#    Updated: 2026/02/02 12:24:54 by joana            ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 class Plant:
     '''Represents a plant and all its attributes'''
-    
     def __init__(self, name: str, height: int, days: int) -> None:
         '''
         Initiates the attributes of each plant
@@ -25,7 +12,7 @@ class Plant:
         self.name = name
         self.height = height
         self.days = days
-        
+
     def grow(self) -> None:
         '''Grow plant 1cm'''
         self.height += 1
