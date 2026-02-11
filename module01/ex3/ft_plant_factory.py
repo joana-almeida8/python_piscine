@@ -19,10 +19,12 @@ class Plant:
 
 
 if __name__ == "__main__":
-    plants = [("Rose", 25, 30), ("Oak", 200, 265),
-              ("Cactus", 5, 90), ("Sunflower", 80, 45),
-              ("Fern", 15, 120)]
+    factory = [("Rose", 25, 30), ("Oak", 200, 265),
+               ("Cactus", 5, 90), ("Sunflower", 80, 45),
+               ("Fern", 15, 120)]
     print("=== Plant Factory Output ===")
-    for p in plants:
-        print(plants.append(Plant(p)))
+    plants = []
+    for p in factory:
+        plants.append(Plant(*p))
+        print(Plant(*p))
     print("\nTotal plants created: 5")
