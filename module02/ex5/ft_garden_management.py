@@ -18,25 +18,24 @@ class WaterError(GardenError):
 
 class GardenManager():
     '''Represent the garden(...)'''
-    def __init__(self, plant_name: str, water_level: int,
-                 sunlight_hours: int) -> None:
+    def __init__(self, name: str, water: int, sun: int) -> None:
         '''Initialize plant and its attributes'''
-        self.plant_name = plant_name
-        self.water_level = water_level
-        self.sunlight_hours = sunlight_hours
+        self.name = name
+        self.water = water
+        self.sunlight = sun
 
     def add_plants(self) -> None:
         '''Add a plant to the garden'''
         try:
-            if self.plant_name is None:
-                raise PlantError("Error adding plant: Plant name cannot be empty!")
+            if self.name is None:
+                raise PlantError("Error adding plant: "
+                                 "Plant name cannot be empty!")
         except PlantError as error:
             print(error)
-            
 
     def water_plants(self) -> None:
         '''Water a plant'''
-    
+
     def check_plant_health(self) -> None:
         '''Check if plant if healthy'''
 

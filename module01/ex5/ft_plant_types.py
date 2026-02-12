@@ -42,10 +42,10 @@ class Flower(Plant):
         '''Initializes a new Flower with
         inherited Plant attributes and its own'''
         super().__init__(name, height, age)
-        self.__colour = "none"
-        self.get_colour(colour)
+        self.__colour = "None"
+        self.set_colour(colour)
 
-    def get_colour(self, colour: str) -> None:
+    def set_colour(self, colour: str) -> None:
         '''Checks if colour exists to prevent data corruption'''
         if colour is not None:
             self.__colour = colour
@@ -72,11 +72,11 @@ class Tree(Plant):
         inherited Plant attributes and its own'''
         super().__init__(name, height, age)
         self.__trunk_diameter = 0
-        self.get_diameter(trunk_diameter)
         self.__shade = 0
+        self.set_diameter(trunk_diameter)
         self.produce_shade(shade)
 
-    def get_diameter(self, trunk_diameter: int) -> None:
+    def set_diameter(self, trunk_diameter: int) -> None:
         '''Checks if trunk_diameter is bigger than 0
         to prevent data corruption'''
         if trunk_diameter > 0:
@@ -105,7 +105,7 @@ class Tree(Plant):
         '''Print a formatted string describing
         the Tree's current attributes'''
         return (f"{super().__str__('Tree')}, "
-                f"{self.__trunk_diameter} square meters of shade")
+                f"{self.__trunk_diameter}cm diameter")
 
 
 class Vegetable(Plant):
@@ -115,12 +115,12 @@ class Vegetable(Plant):
         '''Initializes a new Vegetable with
         inherited Plant attributes and its own'''
         super().__init__(name, height, age)
-        self.__harvest = "none"
-        self.get_harvest(harvest)
-        self.__nutritional_value = "none"
-        self.check_nutrivalue(nutritional_value)
+        self.__harvest = "None"
+        self.__nutritional_value = "None"
+        self.set_harvest(harvest)
+        self.set_nutrivalue(nutritional_value)
 
-    def get_harvest(self, harvest: str) -> None:
+    def set_harvest(self, harvest: str) -> None:
         '''Checks if colour exists to prevent data corruption'''
         if harvest is not None:
             self.__harvest = harvest
@@ -129,7 +129,7 @@ class Vegetable(Plant):
             print(f"Invalid operation attempted: "
                   f"harvest {harvest} [REJECTED]")
 
-    def check_nutrivalue(self, nutritional_value: int) -> None:
+    def set_nutrivalue(self, nutritional_value: int) -> None:
         '''Gets nutritional_value of the vegetable'''
         if nutritional_value is not None:
             self.__nutritional_value = nutritional_value

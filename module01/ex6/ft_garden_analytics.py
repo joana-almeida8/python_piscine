@@ -4,14 +4,10 @@ class Plant:
         '''Initialize a new Plant with its attributes'''
         self.name = name
         self.__height = 0
-        self.check_height(height)
+        self.set_height(height)
         self.initial_height = self.__height
 
-    def get_height(self) -> int:
-        '''Get public __height in cm'''
-        return self.__height
-
-    def check_height(self, height: int) -> None:
+    def set_height(self, height: int) -> None:
         '''Check if height is negative to prevent data corruption'''
         if height < 0:
             print((f"\nInvalid operation attempted: "
@@ -19,6 +15,10 @@ class Plant:
             print("Security: Negative height rejected")
         else:
             self.__height = height
+
+    def get_height(self) -> int:
+        '''Get public __height in cm'''
+        return self.__height
 
     def get_growth(self) -> int:
         '''Calculate specific plant growth'''
@@ -45,9 +45,9 @@ class FloweringPlant(Plant):
         Plant attributes and its own'''
         super().__init__(name, height)
         self.__colour = "none"
-        self.get_colour(colour)
+        self.set_colour(colour)
 
-    def get_colour(self, colour: str) -> None:
+    def set_colour(self, colour: str) -> None:
         '''Check if colour exists to prevent data corruption'''
         if colour is not None:
             self.__colour = colour
@@ -70,9 +70,9 @@ class PrizeFlower(FloweringPlant):
         attributes and its own'''
         super().__init__(name, height, colour)
         self.__prize = 0
-        self.get_prize_points(prize)
+        self.set_prize_points(prize)
 
-    def get_prize_points(self, prize: int) -> None:
+    def set_prize_points(self, prize: int) -> None:
         '''Check if prize points are bigger than 0
         to prevent data corruption'''
         if prize > 0:
@@ -81,6 +81,10 @@ class PrizeFlower(FloweringPlant):
         else:
             print((f"Invalid operation attempted: "
                    f"prize points {self.prize} [REJECTED]"))
+
+    def get_prize_points(self) -> None:
+        '''Get prize points of the plant'''
+        return self.__prize
 
     def __str__(self) -> str:
         '''Print a formatted string describing the
@@ -122,10 +126,18 @@ class GardenManager:
 
     class GardenStats:
         '''Helper class for calculating statistics'''
-        @staticmethod
+
+        def __init__(self, owner: str) -> None:
+            '''Initialize garden stats'''
+            pass
+
         def calc_score(plants) -> int:
             '''Return the sum of all plant heights'''
-            return sum(p.get_height() for p in plants)
+            score = sum(p.get_height() for p in plants)
+            for p in plants:
+                if isinstance(p, PrizeFlower):
+                    score += p.get_prize_points()
+            return score
 
         @staticmethod
         def print_plant_stats(plants) -> None:
@@ -178,6 +190,6 @@ if __name__ == "__main__":
     GardenManager.GardenStats.print_plant_stats(alice_garden.plants)
 
     print(f"\nHeight validation test: {alice_garden.validate_heights()}")
-    print((f"Garden Score - {alice_garden.owner}: {alice_score}, "
+    print((f"Garden Score = {alice_garden.owner}: {alice_score}, "
            f"{bob_garden.owner}: {bob_score}"))
     print(f"Total gardens managed: {GardenManager.total_gardens}")
