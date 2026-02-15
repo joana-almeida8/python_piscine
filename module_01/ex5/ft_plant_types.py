@@ -3,36 +3,36 @@ class Plant:
     def __init__(self, name: str, height: int, age: int) -> None:
         '''Initializes a new Plant with its attributes'''
         self.name = name
-        self.__height = 0
-        self.__age = 0
-        self.get_height(height)
-        self.get_age(age)
+        self._height = 0
+        self._age = 0
+        self.set_height(height)
+        self.set_age(age)
 
-    def get_height(self, height: int) -> None:
+    def set_height(self, height: int) -> None:
         '''Check if height is negative to prevent data corruption'''
         if height < 0:
             print(f"\nInvalid operation attempted: "
                   f"height {self.height}cm [REJECTED]")
             print("Security: Negative height rejected")
         else:
-            self.__height = height
-            return self.__height
+            self._height = height
+            return self._height
 
-    def get_age(self, age: int) -> None:
+    def set_age(self, age: int) -> None:
         '''Check if new age is negative to prevent data corruption'''
         if age < 0:
             print(f"\nInvalid operation attempted: "
                   f"age {self.age} days [REJECTED]")
             print("Security: Negative age rejected")
         else:
-            self.__age = age
-            return self.__age
+            self._age = age
+            return self._age
 
     def __str__(self, plant_type: str) -> str:
         '''Print a formatted string describing the Plant's
         current attributes'''
         return (f"{self.name} ({plant_type}): "
-                f"{self.__height}cm, {self.__age} days")
+                f"{self._height}cm, {self._age} days")
 
 
 class Flower(Plant):
@@ -67,14 +67,12 @@ class Flower(Plant):
 class Tree(Plant):
     '''Represents a single Tree and inherits Plant attributes'''
     def __init__(self, name: str, height: int, age: int,
-                 trunk_diameter: int, shade: int) -> None:
+                 trunk_diameter: int) -> None:
         '''Initializes a new Tree with
         inherited Plant attributes and its own'''
         super().__init__(name, height, age)
         self.__trunk_diameter = 0
-        self.__shade = 0
         self.set_diameter(trunk_diameter)
-        self.produce_shade(shade)
 
     def set_diameter(self, trunk_diameter: int) -> None:
         '''Checks if trunk_diameter is bigger than 0
@@ -86,19 +84,11 @@ class Tree(Plant):
             print(f"Invalid operation attempted: "
                   f"trunk_diameter {self.trunk_diameter} [REJECTED]")
 
-    def produce_shade(self, shade: int) -> None:
+    def produce_shade(self) -> None:
         '''Checks if shade is bigger than 0 to
         prevent data corruption and prints it'''
-        if shade > 0:
-            self.__shade = shade
-            return self.__shade
-        else:
-            print(f"Invalid operation attempted: "
-                  f"shade {self.shade} [REJECTED]")
-
-    def get_shade(self) -> None:
-        '''Get current shade of the tree'''
-        print(f"{self.name} provides {self.__shade} "
+        shade = (self._height * self.__trunk_diameter * 3.14) / 1000
+        print(f"{self.name} provides {shade:.0f} "
               f"square meters of shade")
 
     def __str__(self) -> str:
@@ -151,8 +141,8 @@ class Vegetable(Plant):
 if __name__ == "__main__":
     rose = Flower("Rose", 25, 30, "red")
     sunflower = Flower("Sunflower", 40, 60, "yellow")
-    oak = Tree("Oak", 500, 185, 50, 78)
-    pine = Tree("Pine", 700, 2000, 40, 56)
+    oak = Tree("Oak", 500, 185, 50)
+    pine = Tree("Pine", 700, 2000, 40)
     tomato = Vegetable("Tomato", 80, 90, "summer", "vitamin C")
     carrot = Vegetable("Carrot", 22, 40, "fall", "vitamin A")
 
@@ -164,10 +154,10 @@ if __name__ == "__main__":
     sunflower.bloom()
     print()
     print(oak)
-    oak.get_shade()
+    oak.produce_shade()
     print()
     print(pine)
-    pine.get_shade()
+    pine.produce_shade()
     print()
     print(tomato)
     tomato.get_nutrivalue()
