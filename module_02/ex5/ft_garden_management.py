@@ -81,7 +81,7 @@ class GardenManager():
                                       f"is too low (min 2)"))
                 else:
                     print(f"{plant.name}: healthy (water: {plant.water}, "
-                        f"sun: {plant.sunlight})")
+                          f"sun: {plant.sunlight})")
         except ValueError as error:
             print(error)
 
@@ -89,19 +89,19 @@ class GardenManager():
         '''Check that water tank is not empty'''
         try:
             if self.__water_tank == 0:
-                raise WaterError ("Caught GardenError: "
-                                  "Not enough water in tank")
+                raise WaterError("Caught GardenError: "
+                                 "Not enough water in tank")
         except WaterError as error:
-            print (error)
+            print(error)
         finally:
-            print ("System recovered and continuing...")
+            print("System recovered and continuing...")
 
 
 def test_garden_management() -> None:
     '''Print expected output and call all needed methods'''
     raw_garden = [Plant("tomato", 4, 8),
-              Plant("lettuce", 14, 6),
-              Plant(None, 4, 2)]
+                  Plant("lettuce", 14, 6),
+                  Plant(None, 4, 2)]
     manager = GardenManager()
     print("=== Garden Management System ===")
 
