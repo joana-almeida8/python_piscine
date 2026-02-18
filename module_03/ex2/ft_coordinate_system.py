@@ -41,7 +41,7 @@ if __name__ == "__main__":
     if coord2:
         print(f"Distance between {spawn} and {coord2}: "
               f"{distance(spawn, coord2)}")
-    
+
     parse(invalid)
 
     if coord2:
