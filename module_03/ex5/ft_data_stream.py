@@ -31,7 +31,7 @@ def prime_gen():
                 is_prime = False
                 break
             div -= 1
-        if is_prime == True:
+        if is_prime is True:
             yield n
         n += 1
 

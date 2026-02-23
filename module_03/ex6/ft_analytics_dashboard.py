@@ -37,7 +37,7 @@ if __name__ == "__main__":
     achievement_counts = {p['name']: len(p['achievements']) for p in players
                           if p['status'] == 'active'}
 
-    unique_players = {p['name'] for p in players} 
+    unique_players = {p['name'] for p in players}
     unique_achievements = {achievement for p in players
                            for achievement in p['achievements']}
     active_regions = {p['region'] for p in players}
