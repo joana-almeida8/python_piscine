@@ -21,11 +21,12 @@ class DataProcessor(ABC):
 
 class NumericProcessor(DataProcessor):
     def validate(self, data: Any) -> bool:
-        '''Validate if data is appropriate for this processor'''
+        '''Validate if data is numeric'''
+        if data is None:
+            return False
         try:
-            [int(num) for num in data]
-            return True
-        except ValueError:
+            return all([isinstance(num, (int, float)) for num in data])
+        except TypeError:
             return False
 
     def process(self, data: Any) -> str:
@@ -42,7 +43,8 @@ class NumericProcessor(DataProcessor):
 
 class TextProcessor(DataProcessor):
     def validate(self, data: Any) -> bool:
-        '''Validate if data is appropriate for this processor'''
+        '''Validate if data is text'''
+        return isinstance(data, str) and bool(data)
 
     def process(self, data: Any) -> str:
         '''Process the data and return result string'''
@@ -57,10 +59,23 @@ class TextProcessor(DataProcessor):
 
 class LogProcessor(DataProcessor):
     def validate(self, data: Any) -> bool:
-        '''Validate if data is appropriate for this processor'''
+        '''Validate if data is existing log'''
+        if data is None:
+            return False
+        if isinstance(data, str) and bool(data) and "ERROR" or "INFO" in data:
+            return True
+        return False
 
     def process(self, data: Any) -> str:
         '''Process the data and return result string'''
+        if "ERROR" in data:
+            log_type = "ALERT"
+            log_level = "ERROR"
+        elif "INFO" in data:
+            log_type = "INFO"
+            log_level = log_type
+        before, sep, after = data.partition(':')
+        return f"[{log_type}] {log_level} level detected:{after}"
 
     def format_output(self, result: str) -> str:
         '''Format the output string'''
@@ -71,11 +86,13 @@ if __name__ == "__main__":
     num_data = [1, 2, 3, 4, 5]
     str_data = "Hello Nexus World"
     logstr_data = "ERROR: Connection timeout"
-    process_data = ([1, 2, 3], "Hello World!", "INFO: System ready")
 
     numeric_data = NumericProcessor()
     text_data = TextProcessor()
     log_data = LogProcessor()
+
+    process_data = ([1, 2, 3], "Hello World!", "INFO: System ready")
+    processors = (numeric_data, text_data, log_data)
 
     print("=== CODE NEXUS - DATA PROCESSOR FOUNDATION ===")
 
@@ -86,7 +103,7 @@ if __name__ == "__main__":
         numeric_result = numeric_data.process(num_data)
         print(f"{numeric_data.format_output(numeric_result)}")
     else:
-        print("Validation: ERROR (data non-numeric)")
+        print("Validation ERROR: data non-numeric")
 
     print("\nInitializing Text Processor...")
     print(f"Processing data: {str_data}")
@@ -95,7 +112,7 @@ if __name__ == "__main__":
         text_result = text_data.process(str_data)
         print(f"{text_data.format_output(text_result)}")
     else:
-        print("Validation: ERROR (data non-textual)")
+        print("Validation ERROR: data non-textual")
 
     print("\nInitializing Log Processor...")
     print(f"Processing data: {logstr_data}")
@@ -104,13 +121,13 @@ if __name__ == "__main__":
         log_result = log_data.process(logstr_data)
         print(f"{log_data.format_output(log_result)}")
     else:
-        print("Validation: ERROR (log entry not found)")
+        print("Validation ERROR: log entry not found")
 
     print("\n=== Polymorphic Processing Demo ===")
-    print("Processing multiple data types through same interface...")
+    print("Processing multiple data types through the same interface...")
     i = 0
     for pd in process_data:
-        print(f"Result {i + 1}: {numeric_data.process(pd)}")
+        print(f"Result {i + 1}: {processors[i].process(pd)}")
         i += 1
 
     print("\nFoundation systems online. Nexus ready for advanced streams.")
