@@ -39,6 +39,17 @@ class SensorStream(DataStream):
         stats.update({"Type": self.type})
         return stats
 
+    def filter_data(self, data_batch: List[Any],
+                    criteria: Optional[str] = None) -> List[Any]:
+        '''Filter data based on criteria'''
+        filtered_batch = []
+        for data in data_batch:
+            for key, value in data.items():
+                if isinstance(key, (str)) and isinstance(value, (float, int)):
+                    if key == "temp" or key == "humidity" or key == "pressure":
+                        filtered_batch.append(data)
+        return filtered_batch
+
     def format_batch(self, data_batch: List[Any]) -> str:
         '''Return the stream as a formatted list'''
         sensor_batch = []
@@ -73,6 +84,17 @@ class TransactionStream(DataStream):
         stats = super().get_stats()
         stats.update({"Type": self.type})
         return stats
+
+    def filter_data(self, data_batch: List[Any],
+                    criteria: Optional[str] = None) -> List[Any]:
+        '''Filter data based on criteria'''
+        filtered_batch = []
+        for data in data_batch:
+            for key, value in data.items():
+                if isinstance(key, (str)) and isinstance(value, (float, int)):
+                    if key == "buy" or key == "sell":
+                        filtered_batch.append(data)
+        return filtered_batch
 
     def format_batch(self, data_batch: List[Any]) -> str:
         '''Return the stream as a formatted list'''
@@ -109,6 +131,16 @@ class EventStream(DataStream):
         stats.update({"Type": self.type})
         return stats
 
+    def filter_data(self, data_batch: List[Any],
+                    criteria: Optional[str] = None) -> List[Any]:
+        '''Filter data based on criteria'''
+        filtered_batch = []
+        for data in data_batch:
+            if isinstance(data, (str)):
+                if data == "login" or data == "error" or data == "logout":
+                    filtered_batch.append(data)
+        return filtered_batch
+
     def format_batch(self, data_batch: List[Any]) -> str:
         '''Return the stream as a formatted list'''
         return f"{(", ").join(data_batch)}"
@@ -130,27 +162,36 @@ class StreamProcessor():
     '''Class handling the polymorphic stream processing'''
 
     def __init__(self) -> None:
-        '''Initialize class with list to process'''
+        '''Initialize class with list of streams to process'''
         self.streams = []
-    
+
     def add_stream(self, stream: DataStream) -> None:
         '''Add streams to the processor list'''
         self.streams.append(stream)
 
     def filter_all(self, data_batch: List[Any],
-                    criteria: Optional[str] = None) -> List[Any]:
+                   criteria: Optional[str] = None) -> List[Any]:
         '''Filter data based on criteria'''
         return data_batch
 
     def process_all(self, data_batch: Dict[str, List[Any]]) -> str:
         '''Process a batch of data'''
-        output = []
+        processed = []
         for stream in self.streams:
-            data = data_batch.get(stream.stream_id, [])
-            res = stream.process_batch(data)
-            summary = res.split(":")[1].strip().split(",")[0]
-            output.append(f"- {stream.type.split()[0]} data: {summary}")
-        return " ".join(output)
+            value = data_batch.get(stream.stream_id, [])
+            count = len(value)
+            if stream.stream_id[:5] == "SENSO":
+                stream_type = "Sensor"
+                type_processed = "readings"
+            elif stream.stream_id[:5] == "TRANS":
+                stream_type = "Transaction"
+                type_processed = "operations"
+            elif stream.stream_id[:5] == "EVENT":
+                stream_type = "Event"
+                type_processed = "events"
+            processed.append(f"- {stream_type} "
+                             f"data: {count} {type_processed} processed")
+        return "\n".join(processed)
 
 
 if __name__ == "__main__":
@@ -168,21 +209,30 @@ if __name__ == "__main__":
 
     print("\nInitializing Sensor Stream...")
     print(", ".join([f"{k}: {v}" for k, v in sensor.get_stats().items()]))
-    sf_batch = sensor.filter_data(s_batch) 
-    print(f"Processing sensor batch: [{sensor.format_batch(sf_batch)}]")
-    print(f"{sensor.process_batch(sf_batch)}")
+    sf_batch = sensor.filter_data(s_batch)
+    if sf_batch:
+        print(f"Processing sensor batch: [{sensor.format_batch(sf_batch)}]")
+        print(f"{sensor.process_batch(sf_batch)}")
+    else:
+        print("ERROR: Sensor values invalid.")
 
     print("\nInitializing Transaction Stream...")
     print(", ".join([f"{k}: {v}" for k, v in trans.get_stats().items()]))
-    tf_batch = trans.filter_data(t_batch)
-    print(f"Processing transaction batch: [{trans.format_batch(tf_batch)}]")
-    print(f"{trans.process_batch(tf_batch)}")
+    tfbatch = trans.filter_data(t_batch)
+    if tfbatch:
+        print(f"Processing transaction batch: [{trans.format_batch(tfbatch)}]")
+        print(f"{trans.process_batch(tfbatch)}")
+    else:
+        print("ERROR: Transaction values invalid.")
 
     print("\nInitializing Event Stream...")
     print(", ".join([f"{k}: {v}" for k, v in event.get_stats().items()]))
     ef_batch = event.filter_data(e_batch)
-    print(f"Processing event batch: [{event.format_batch(ef_batch)}]")
-    print(f"{event.process_batch(ef_batch)}")
+    if ef_batch:
+        print(f"Processing event batch: [{event.format_batch(ef_batch)}]")
+        print(f"{event.process_batch(ef_batch)}")
+    else:
+        print("ERROR: Event values invalid.")
 
     print("\n=== Polymorphic Stream Processing ===")
     print("Processing mixed stream types through unified interface...\n")
@@ -190,17 +240,18 @@ if __name__ == "__main__":
     processor.add_stream(sensor)
     processor.add_stream(trans)
     processor.add_stream(event)
-    
+
     batch1 = {"SENSOR_001": ["temp:38.0", "temp:42.0"],
-             "TRANS_001": ["buy:30", "sell:200", "buy:100", "sell:50"],
-             "EVENT_001": ["login", "error", "logout"]}
+              "TRANS_001": ["buy:30", "sell:200", "buy:100", "sell:50"],
+              "EVENT_001": ["login", "error", "logout"]}
 
     print("Batch 1 Results:")
-    print(processor.process_all(batch1))
+    print(f"{processor.process_all(batch1)}")
 
     print("Stream filtering active: High-priority data only")
     filtered_batch = processor.filter_all(batch1)
-    print(f"Filtered results: {filtered_batch['SENSOR_001']} critical sensor alerts, "
+    print(f"Filtered results: "
+          f"{filtered_batch['SENSOR_001']} critical sensor alerts, "
           f"{filtered_batch['TRANS_001']} large transaction")
 
     print("\nAll streams processed successfully. Nexus throughput optimal.")
