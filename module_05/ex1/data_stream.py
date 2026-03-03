@@ -46,8 +46,17 @@ class SensorStream(DataStream):
         for data in data_batch:
             for key, value in data.items():
                 if isinstance(key, (str)) and isinstance(value, (float, int)):
-                    if key == "temp" or key == "humidity" or key == "pressure":
-                        filtered_batch.append(data)
+                    if not criteria:
+                        if (key == "temp" or key == "humidity"
+                                or key == "pressure"):
+                            filtered_batch.append(data)
+                    elif criteria == "High-priority":
+                        if key == "pressure" and (value >= 1050 or value < 90):
+                            filtered_batch.append(data)
+                        elif key == "temp" and (value >= 27 or value < 8):
+                            filtered_batch.append(data)
+                        elif key == "humidity" and (value >= 75 or value < 20):
+                            filtered_batch.append(data)
         return filtered_batch
 
     def format_batch(self, data_batch: List[Any]) -> str:
@@ -92,8 +101,12 @@ class TransactionStream(DataStream):
         for data in data_batch:
             for key, value in data.items():
                 if isinstance(key, (str)) and isinstance(value, (float, int)):
-                    if key == "buy" or key == "sell":
-                        filtered_batch.append(data)
+                    if not criteria:
+                        if key == "buy" or key == "sell":
+                            filtered_batch.append(data)
+                    elif criteria == "High-priority":
+                        if (key == "buy" or key == "sell") and value >= 200:
+                            filtered_batch.append(data)
         return filtered_batch
 
     def format_batch(self, data_batch: List[Any]) -> str:
@@ -137,8 +150,12 @@ class EventStream(DataStream):
         filtered_batch = []
         for data in data_batch:
             if isinstance(data, (str)):
-                if data == "login" or data == "error" or data == "logout":
-                    filtered_batch.append(data)
+                if not criteria:
+                    if data == "login" or data == "error" or data == "logout":
+                        filtered_batch.append(data)
+                elif criteria == "High-priority":
+                    if data == "error":
+                        filtered_batch.append(data)
         return filtered_batch
 
     def format_batch(self, data_batch: List[Any]) -> str:
@@ -160,7 +177,6 @@ class EventStream(DataStream):
 
 class StreamProcessor():
     '''Class handling the polymorphic stream processing'''
-
     def __init__(self) -> None:
         '''Initialize class with list of streams to process'''
         self.streams = []
@@ -169,10 +185,33 @@ class StreamProcessor():
         '''Add streams to the processor list'''
         self.streams.append(stream)
 
-    def filter_all(self, data_batch: List[Any],
+    def filter_all(self, data_batch: Dict[str, List[Any]],
                    criteria: Optional[str] = None) -> List[Any]:
         '''Filter data based on criteria'''
-        return data_batch
+        alert_messages = []
+        for stream in self.streams:
+            value = data_batch.get(stream.stream_id, [])
+            filtered_items = stream.filter_data(value, criteria)
+            count = len(filtered_items)
+
+            if count == 0:
+                continue
+
+            if isinstance(stream, SensorStream):
+                suffix = "alert" if count == 1 else "alerts"
+                alert_messages.append(f"{count} critical sensor {suffix}")
+            if isinstance(stream, TransactionStream):
+                suffix = "transaction" if count == 1 else "transactions"
+                alert_messages.append(f"{count} large {suffix}")
+            if isinstance(stream, EventStream):
+                if count > 5:
+                    suffix = "error" if count == 1 else "errors"
+                    alert_messages.append(f"{count} {suffix} detected")
+
+        if not alert_messages:
+            return f"Filtered results: No {criteria} alerts detected."
+
+        return f"Filtered results: {(", ").join(alert_messages)}"
 
     def process_all(self, data_batch: Dict[str, List[Any]]) -> str:
         '''Process a batch of data'''
@@ -241,17 +280,16 @@ if __name__ == "__main__":
     processor.add_stream(trans)
     processor.add_stream(event)
 
-    batch1 = {"SENSOR_001": ["temp:38.0", "temp:42.0"],
-              "TRANS_001": ["buy:30", "sell:200", "buy:100", "sell:50"],
+    batch1 = {"SENSOR_001": [{'temp': 38.0}, {'humidity': 80.0}],
+              "TRANS_001": [{'buy': 30}, {'sell': 200},
+                            {'buy': 100}, {'sell': 40}],
               "EVENT_001": ["login", "error", "logout"]}
 
     print("Batch 1 Results:")
     print(f"{processor.process_all(batch1)}")
 
-    print("Stream filtering active: High-priority data only")
-    filtered_batch = processor.filter_all(batch1)
-    print(f"Filtered results: "
-          f"{filtered_batch['SENSOR_001']} critical sensor alerts, "
-          f"{filtered_batch['TRANS_001']} large transaction")
+    print("\nStream filtering active: High-priority data only")
+    filtered_batch = processor.filter_all(batch1, "High-priority")
+    print(f"{filtered_batch}")
 
     print("\nAll streams processed successfully. Nexus throughput optimal.")
