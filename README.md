@@ -24,6 +24,7 @@ This repository documents my progression through the Python Piscine modules.
 | Module 02 | v2.1 | Data Engineering | Data pipelines, error handling, resilient processing, structured data handling |
 | Module 03 | v2.3 | Advanced Data Structures | Lists, dictionaries, sets, iteration patterns, analytics-style data processing |
 | Module 04 | — | File Operations & Persistence | File I/O, data preservation, structured storage, state management |
+| Module 05 | v2.0 | Enterprise Architecture | ABCs, Protocols, Pipeline Patterns, Fault Tolerance, Strategic Error Recovery |
 
 ---
 
@@ -38,6 +39,8 @@ Throughout the Piscine, I strengthened my ability to:
 - Work with files and persistent data  
 - Apply abstraction and code reuse principles  
 - Follow Pythonic conventions and best practices  
+- Architect robust systems using Abstract Base Classes (ABCs) and Protocols to enforce interface contracts
+- Build fault-tolerant pipelines with integrated error recovery mechanisms and circuit breaker logic
 
 ---
 
