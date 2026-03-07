@@ -25,6 +25,7 @@ This repository documents my progression through the Python Piscine modules.
 | Module 03 | v2.3 | Advanced Data Structures | Lists, dictionaries, sets, iteration patterns, analytics-style data processing |
 | Module 04 | — | File Operations & Persistence | File I/O, data preservation, structured storage, state management |
 | Module 05 | v2.0 | Enterprise Architecture | ABCs, Protocols, Pipeline Patterns, Fault Tolerance, Strategic Error Recovery |
+| Module 06 | v1.0 | Package Architecture | __init__.py (Namespacing), Absolute vs. Relative Imports, Circular Dependency Resolution |
 
 ---
 
