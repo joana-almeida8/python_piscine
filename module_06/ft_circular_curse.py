@@ -6,7 +6,7 @@ if __name__ == "__main__":
 
     print("\nTesting ingredient validation:")
     print("validate_ingredients(\"fire air\"): "
-          f"{validate_ingredients("fire air")}")
+          f"{validate_ingredients('fire air')}")
     print("validate_ingredients(\"dragon scales\"): "
           f"{validate_ingredients('dragon scales')}")
 

@@ -40,37 +40,37 @@ class InputStage(ProcessingStage):
             valid_keys = {"sensor", "value", "unit"}
             valid_units = ["C", "F"]
             if set(data.keys()) != valid_keys:
-                raise TypeError (f"Missing or extra keys. "
-                                 f"Expected {list(valid_keys)}")
+                raise TypeError(f"Missing or extra keys. "
+                                f"Expected {list(valid_keys)}")
             if isinstance(data["sensor"], str):
                 processed_data.update({"sensor": data.get("sensor")})
             else:
-                raise TypeError (f"Value {data["sensor"]} invalid")
+                raise TypeError(f"Value {data['sensor']} invalid")
             if isinstance(data["value"], (int, float)):
                 processed_data.update({"value": data.get("value")})
             else:
-                raise TypeError (f"Value {data["value"]} invalid")
+                raise TypeError(f'Value {data["value"]} invalid')
             if not isinstance(data["unit"], str):
-                raise TypeError (f"Value {data["unit"]} invalid")
+                raise TypeError(f'Value {data["unit"]} invalid')
             if data["unit"] in valid_units:
                 processed_data.update({"unit": data.get("unit")})
             else:
-                raise ValueError (f"Invalid unit: {data["unit"]}. "
-                                  f"Expected {valid_units}")
-        
+                raise ValueError(f'Invalid unit: {data["unit"]}. '
+                                 f'Expected {valid_units}')
+
         elif isinstance(data, str):
             valid_data = {"user", "action", "timestamp"}
             if "," not in data:
-                raise ValueError ("Invalid input. "
-                                  "Expected CSV (comma-separated)")
+                raise ValueError("Invalid input. "
+                                 "Expected CSV (comma-separated)")
             data = [token.strip() for token in data.split(",")]
             if not valid_data.issubset(set(data)):
-                raise ValueError (f"Missing input. "
-                                  f"Expected all of {valid_data}")
+                raise ValueError(f"Missing input. "
+                                 f"Expected all of {valid_data}")
             for d in data:
                 if d not in valid_data:
-                    raise ValueError (f"Input '{d}' invalid. "
-                                      f"Expected {valid_data}")
+                    raise ValueError(f"Input '{d}' invalid. "
+                                     f"Expected {valid_data}")
                 else:
                     if d not in processed_data.keys():
                         processed_data[d] = 1
@@ -84,8 +84,8 @@ class InputStage(ProcessingStage):
                     count += 1
                     processed_data.update({f"R{count}": d})
                 else:
-                    raise TypeError (f"Invalid input format: '{d}'. "
-                                     f"Expected a number")
+                    raise TypeError(f"Invalid input format: '{d}'. "
+                                    f"Expected a number")
 
         return processed_data
 
@@ -126,7 +126,7 @@ class JSONAdapter(ProcessingPipeline):
     def __init__(self, pipeline_id: str):
         '''Initialize JSON adapter'''
         super().__init__(pipeline_id)
-    
+
     def process(self, data: Any) -> Union[str, Any]:
         '''Process JSON data through pipeline stages'''
         current_data = data
@@ -141,7 +141,7 @@ class CSVAdapter(ProcessingPipeline):
     def __init__(self, pipeline_id: str):
         '''Initialize CSV adapter'''
         super().__init__(pipeline_id)
-    
+
     def process(self, data: Any) -> Union[str, Any]:
         '''Process CSV data through pipeline stages'''
         current_data = data
@@ -162,7 +162,7 @@ class StreamAdapter(ProcessingPipeline):
         for stage in self.stages:
             current_data = stage.process(current_data)
         return current_data
-                                                                                                                                                        
+
 
 class NexusManager():
     '''Class managing the pipeline for processing'''
@@ -178,15 +178,16 @@ class NexusManager():
         '''Process data from different adapters'''
         try:
             if pipeline_id not in self.pipelines:
-                raise ValueError (f"Pipeline ID {pipeline_id} not found.")
+                raise ValueError(f"Pipeline ID {pipeline_id} not found.")
             output = self.pipelines[pipeline_id].process(data)
             if not output:
                 raise ValueError("Invalid data format")
             return output
         except (ValueError, TypeError) as error:
             print(f"Error detected in Stage 2: {error}\n"
-                  f"Recovery initiated: Switching to backup processor\n"
-                  f"Recovery successful: Pipeline restored, processing resumed")
+                  "Recovery initiated: Switching to backup processor\n"
+                  "Recovery successful: Pipeline restored, "
+                  "processing resumed")
         return {}
 
 
@@ -242,7 +243,7 @@ if __name__ == "__main__":
     nexus.add_pipeline(stream_a)
     stream_output = nexus.process_data("STREAM_001", stream_data)
     if stream_output:
-        print(f"Input: Real-time sensor stream")
+        print("Input: Real-time sensor stream")
         print("Transform: Aggregated and filtered")
         print(f"Output: {stream_output}")
 

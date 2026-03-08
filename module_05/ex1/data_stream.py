@@ -160,7 +160,7 @@ class EventStream(DataStream):
 
     def format_batch(self, data_batch: List[Any]) -> str:
         '''Return the stream as a formatted list'''
-        return f"{(", ").join(data_batch)}"
+        return f'{(", ").join(data_batch)}'
 
     def process_batch(self, data_batch: List[Any]) -> str:
         '''Process a batch of data'''
@@ -211,7 +211,7 @@ class StreamProcessor():
         if not alert_messages:
             return f"Filtered results: No {criteria} alerts detected."
 
-        return f"Filtered results: {(", ").join(alert_messages)}"
+        return f'Filtered results: {(", ").join(alert_messages)}'
 
     def process_all(self, data_batch: Dict[str, List[Any]]) -> str:
         '''Process a batch of data'''

@@ -106,7 +106,7 @@ if __name__ == "__main__":
         print("Validation ERROR: data non-numeric")
 
     print("\nInitializing Text Processor...")
-    print(f"Processing data: {str_data}")
+    print(f'Processing data: "{str_data}"')
     if text_data.validate(str_data):
         print("Validation: Text data verified")
         text_result = text_data.process(str_data)
@@ -115,7 +115,7 @@ if __name__ == "__main__":
         print("Validation ERROR: data non-textual")
 
     print("\nInitializing Log Processor...")
-    print(f"Processing data: {logstr_data}")
+    print(f'Processing data: "{logstr_data}"')
     if log_data.validate(logstr_data):
         print("Validation: Log entry verified")
         log_result = log_data.process(logstr_data)
