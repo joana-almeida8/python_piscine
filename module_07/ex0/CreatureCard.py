@@ -1,5 +1,4 @@
 from .Card import Card
-from typing import Dict
 
 
 class CreatureCard(Card):
@@ -10,19 +9,19 @@ class CreatureCard(Card):
         self.health = health
         self.type = "Creature"
 
-    def get_card_info(self) -> Dict:
+    def get_card_info(self) -> dict:
         info = super().get_card_info()
         info['type'] = self.type
         info['attack'] = self.attack
         info['health'] = self.health
         return info
 
-    def play(self, game_state: dict) -> Dict:
+    def play(self, game_state: dict) -> dict:
         game_state = {'card_played': 'Fire Dragon', 'mana_used': 5,
                       'effect': 'Creature summoned to battlefield'}
         return game_state
     
-    def attack_target(self, target: 'CreatureCard') -> Dict:
+    def attack_target(self, target: 'CreatureCard') -> dict:
         attack_info = {'attacker': self.name, 'target': target.name,
                       'damage_dealt': self.attack}
         if target.health <= self.attack:
