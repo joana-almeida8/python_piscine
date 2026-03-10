@@ -6,6 +6,7 @@ class SpellCard(Card):
                 effect_type: str) -> None:
         super().__init__(name, cost, rarity)
         self.effect_type = effect_type
+        self.type = "Spell"
 
     def play(sef, game_state: dict) -> dict:
         return game_state

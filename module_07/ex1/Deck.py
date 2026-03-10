@@ -1,8 +1,9 @@
 from ex0.Card import Card
 from ex0.CreatureCard import CreatureCard
-from .ArtifactCard import ArtifactCard
-from .SpellCard import SpellCard
+from ex1.ArtifactCard import ArtifactCard
+from ex1.SpellCard import SpellCard
 from random import random
+from typing import Dict, List
 
 
 class Deck:
@@ -25,17 +26,17 @@ class Deck:
         random.shuffle(self.deck)
 
     def draw_card(self) -> Card:
-        ...
+        if not self.deck:
+            raise ValueError("The deck is empty.")
+        return self.deck.pop(0)
 
     def get_deck_stats(self) -> dict:
-        creatures = 0
-        spells = 0
-        artifacts = 0
-        for card in self.deck:
-            creatures = sum(isinstance(card, CreatureCard))
-            for key, value in card():
-                
-                
-        stats = {'total_cards': {len(self.deck)}, 'creatures': 1,
-                 'spells': 1, 'artifacts': 1, 'avg_cost': 4.0}
+        creatures = sum(isinstance(card, CreatureCard) for card in self.deck)
+        spells = sum(isinstance(card, SpellCard) for card in self.deck)
+        artifacts = sum(isinstance(card, ArtifactCard) for card in self.deck)
+        total_cost = sum(card.cost for card in self.deck)
+        avg_cost = total_cost / len(self.deck) if len(self.deck) > 0 else 0.0
+        stats = {'total_cards': len(self.deck), 'creatures': creatures,
+                 'spells': spells, 'artifacts': artifacts,
+                 'avg_cost': avg_cost}
         return stats
