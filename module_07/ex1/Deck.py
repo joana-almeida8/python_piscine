@@ -1,9 +1,9 @@
+import random
+from typing import Dict, List
 from ex0.Card import Card
 from ex0.CreatureCard import CreatureCard
 from ex1.ArtifactCard import ArtifactCard
 from ex1.SpellCard import SpellCard
-from random import random
-from typing import Dict, List
 
 
 class Deck:
@@ -23,7 +23,8 @@ class Deck:
             return False
 
     def shuffle(self) -> None:
-        random.shuffle(self.deck)
+        if len(self.deck) > 1:
+            random.shuffle(self.deck)
 
     def draw_card(self) -> Card:
         if not self.deck:
@@ -38,5 +39,5 @@ class Deck:
         avg_cost = total_cost / len(self.deck) if len(self.deck) > 0 else 0.0
         stats = {'total_cards': len(self.deck), 'creatures': creatures,
                  'spells': spells, 'artifacts': artifacts,
-                 'avg_cost': avg_cost}
+                 'avg_cost': round(avg_cost, 1)}
         return stats

@@ -9,7 +9,9 @@ class ArtifactCard(Card):
         self.effect = effect
         self.type = "Artifact"
 
-    def play(sef, game_state: dict) -> dict:
+    def play(self, game_state: dict) -> dict:
+        game_state = {'card_played': self.name, 'mana_used': self.cost,
+                      'effect': self.effect}
         return game_state
 
     def activate_ability(self) -> dict:

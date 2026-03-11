@@ -8,7 +8,9 @@ class SpellCard(Card):
         self.effect_type = effect_type
         self.type = "Spell"
 
-    def play(sef, game_state: dict) -> dict:
+    def play(self, game_state: dict) -> dict:
+        game_state = {'card_played': self.name, 'mana_used': self.cost,
+                      'effect': self.effect_type}
         return game_state
 
     def resolve_effect(self, targets: list) -> dict:
