@@ -1,5 +1,4 @@
 import random
-from typing import Dict, List
 from ex0.Card import Card
 from ex0.CreatureCard import CreatureCard
 from ex1.ArtifactCard import ArtifactCard
@@ -19,7 +18,7 @@ class Deck:
                 if key['name'] == card_name:
                     self.deck.remove(card)
                     return True
-        if not card_name in self.deck:
+        if card_name not in self.deck:
             return False
 
     def shuffle(self) -> None:

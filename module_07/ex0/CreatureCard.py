@@ -21,10 +21,10 @@ class CreatureCard(Card):
         game_state = {'card_played': {self.name}, 'mana_used': 5,
                       'effect': self.effect}
         return game_state
-    
+
     def attack_target(self, target: 'CreatureCard') -> dict:
         attack_info = {'attacker': self.name, 'target': target.name,
-                      'damage_dealt': self.attack}
+                       'damage_dealt': self.attack}
         if target.health <= self.attack:
             attack_info['combat_resolved'] = True
         else:
