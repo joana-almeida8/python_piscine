@@ -3,12 +3,12 @@ from abc import abstractmethod
 
 
 class Combatable(Card):
-    def __init__(self, name, cost, rarity, combat_type,
-                 attack_damage, defense_damage):
-        super().__init__(name, cost, rarity)
+    def __init__(self, combat_type: str, attack_damage: int,
+                 defense: int, **kwargs):
+        super().__init__(**kwargs)
         self.combat_type = combat_type
         self.attack_damage = attack_damage
-        self.defense_damage = defense_damage
+        self.defense = defense
 
     @abstractmethod
     def attack(self, target) -> dict:

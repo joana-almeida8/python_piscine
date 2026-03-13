@@ -1,9 +1,4 @@
-from ex0.CreatureCard import CreatureCard
 from ex1.Deck import Deck
-from ex1.ArtifactCard import ArtifactCard
-from ex1.SpellCard import SpellCard
-from ex2.Combatable import Combatable
-from ex2.Magical import Magical
 from ex2.EliteCard import EliteCard
 
 
@@ -16,19 +11,36 @@ if __name__ == "__main__":
     print("- Magical: ['cast_spell', 'channel_mana', 'get_magic_stats']")
 
     print("\nPlaying Arcane Warrior (Elite Card):")
-    ec_arcane_warrior = EliteCard("Arcane Warrior", 11, "Elite", 5, 7, 4, 3, 9)
-    cc_enemy = CreatureCard("Enemy", 6, "Rare", 6, 6)
+    ec_arcane_warrior = EliteCard(name="Arcane Warrior", cost=11,
+                                  rarity="Elite", combat_type="melee",
+                                  attack_damage=5, defense=3, mana = 4,
+                                  mana_cost=4, spell_damage=3, health=9)
+    ec_enemy = EliteCard(name="Enemy", cost=6,
+                                  rarity="Rare", combat_type="melee",
+                                  attack_damage=2, defense=6, mana = 4,
+                                  mana_cost=6, spell_damage=6, health=6)
+    ec_enemy1 = EliteCard(name="Enemy1", cost=1,
+                          rarity="Common", combat_type="melee",
+                          attack_damage=5, defense=7, mana = 4,
+                          mana_cost=4, spell_damage=3, health=9)
+    ec_enemy2 = EliteCard(name="Enemy2", cost=1,
+                          rarity="Common", combat_type="melee",
+                          attack_damage=5, defense=7, mana = 4,
+                          mana_cost=4, spell_damage=3, health=9)
     Deck().add_card(ec_arcane_warrior)
-    Deck().add_card(cc_enemy)
+    Deck().add_card(ec_enemy)
+    Deck().add_card(ec_enemy1)
+    Deck().add_card(ec_enemy2)
 
     print("\nCombat phase:")
-    attack_res = ec_arcane_warrior.attack(cc_enemy)
+    attack_res = ec_arcane_warrior.attack(ec_enemy)
     print(f"Attack result: {attack_res}")
-    defend_res = ec_arcane_warrior.defend(cc_enemy)
+    defend_res = ec_arcane_warrior.defend(5)
+    print(f"Defense result: {defend_res}")
 
     print("\nMagic phase:")
     cast_spell = ec_arcane_warrior.cast_spell("Fireball", ['Enemy1', 'Enemy2'])
     print(f"Spell cast: {cast_spell}")
-    print(f"Mana channel: {ec_arcane_warrior.get_magic_stats()}")
+    print(f"Mana channel: {ec_arcane_warrior.channel_mana(3)}")
 
-    print("Multiple interface implementation successful!")
+    print("\nMultiple interface implementation successful!")

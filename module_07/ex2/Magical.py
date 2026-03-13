@@ -3,8 +3,9 @@ from abc import abstractmethod
 
 
 class Magical(Card):
-    def __init__(self, name, cost, rarity, mana_cost, spell_damage):
-        super().__init__(name, cost, rarity)
+    def __init__(self, mana: int, mana_cost: int, spell_damage: int, **kwargs):
+        super().__init__(**kwargs)
+        self.mana = mana
         self.mana_cost = mana_cost
         self.spell_damage = spell_damage
 
