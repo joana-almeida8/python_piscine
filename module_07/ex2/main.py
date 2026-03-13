@@ -13,19 +13,19 @@ if __name__ == "__main__":
     print("\nPlaying Arcane Warrior (Elite Card):")
     ec_arcane_warrior = EliteCard(name="Arcane Warrior", cost=11,
                                   rarity="Elite", combat_type="melee",
-                                  attack_damage=5, defense=3, mana = 4,
+                                  attack_damage=5, defense=3, mana=4,
                                   mana_cost=4, spell_damage=3, health=9)
     ec_enemy = EliteCard(name="Enemy", cost=6,
-                                  rarity="Rare", combat_type="melee",
-                                  attack_damage=2, defense=6, mana = 4,
-                                  mana_cost=6, spell_damage=6, health=6)
+                         rarity="Rare", combat_type="melee",
+                         attack_damage=2, defense=6, mana=4,
+                         mana_cost=6, spell_damage=6, health=6)
     ec_enemy1 = EliteCard(name="Enemy1", cost=1,
                           rarity="Common", combat_type="melee",
-                          attack_damage=5, defense=7, mana = 4,
+                          attack_damage=5, defense=7, mana=4,
                           mana_cost=4, spell_damage=3, health=9)
     ec_enemy2 = EliteCard(name="Enemy2", cost=1,
                           rarity="Common", combat_type="melee",
-                          attack_damage=5, defense=7, mana = 4,
+                          attack_damage=5, defense=7, mana=4,
                           mana_cost=4, spell_damage=3, health=9)
     Deck().add_card(ec_arcane_warrior)
     Deck().add_card(ec_enemy)
