@@ -19,7 +19,7 @@ class GameEngine():
     def simulate_turn(self) -> dict:
         self.turns += 1
         battlefield = self.strategy.prioritize_targets([])
-        simulation: dict = self.strategy.execute_turn(self.hand, battlefield)
+        simulation = self.strategy.execute_turn(self.hand, battlefield)
         self.total_damage += simulation['damage_dealt']
         return simulation
 
