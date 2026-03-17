@@ -1,0 +1,17 @@
+[tool.poetry]
+package-mode = false
+name = "Loading Programs"
+description = "Demonstrative program of package management with pip and Poetry"
+version = "1.0.0"
+author = JA <jreis-de@student.42lisboa.com>
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pandas = "^2.1.0"
+numpy = "^1.26.4"
+matplotlib = "^3.7.2"
+requests = "^2.31.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
