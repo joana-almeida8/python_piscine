@@ -3,10 +3,11 @@ from ex4.Rankable import Rankable
 
 
 class TournamentCard(Combatable, Rankable):
-    def __init__(self, card_id, rating, **kwargs):
+    def __init__(self, card_id, rating, health, **kwargs):
         super().__init__(**kwargs)
         self.card_id = card_id
         self.rating = rating
+        self.health = health
         self.wins = 0
         self.losses = 0
         self.record = "0-0"
@@ -24,11 +25,16 @@ class TournamentCard(Combatable, Rankable):
         self.health -= damage_taken
         return {"damage_taken": damage_taken}
 
+    def get_combat_stats(self) -> dict:
+        ...
+
     def calculate_rating(self) -> int:
         ...
 
     def get_tournament_stats(self) -> dict:
-        ...
+        return {'name': self.name,
+                'rating': self.rating,
+                'score': self.record}
 
     def update_wins(self, wins: int) -> None:
         self.wins += wins
