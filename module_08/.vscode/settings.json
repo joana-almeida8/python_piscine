@@ -1,0 +1,4 @@
+{
+    "python.defaultInterpreterPath":"/usr/bin/python3",
+    "python.analysis.extraPaths":["/home/jreis-de/.local/lib/python3.10/site-packages"]
+}
