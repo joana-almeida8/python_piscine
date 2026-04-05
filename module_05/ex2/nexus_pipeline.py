@@ -33,8 +33,8 @@ class InputStage(ProcessingStage):
         '''Process input data with validation'''
         processed_data = {}
 
-        if not data:
-            return {}
+        # if not data:
+        #     return {}
 
         if isinstance(data, dict):
             valid_keys = {"sensor", "value", "unit"}
@@ -209,7 +209,7 @@ if __name__ == "__main__":
     print("\n=== Multi-Format Data Processing ===")
 
     print("\nProcessing JSON data through pipeline...")
-    json_data = {"sensor": "temp", "value": 23.5, "unit": "C"}
+    json_data = {"value": 23.5, "unit": "C"}
     json_a = JSONAdapter("JSON_001")
     json_a.add_stage(i_stage)
     json_a.add_stage(t_stage)
