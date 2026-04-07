@@ -37,10 +37,8 @@ if __name__ == "__main__":
 
         print("\nTo enter the construct, run:")
         print("python -m venv matrix_env")
-        print("source matrix_env/bin/activate # on Unix")
-        print("matrix_env")
-        print("Scripts")
-        print("activate   # On Windows")
+        print("source matrix_env/bin/activate # On Unix")
+        print("matrix_env\Scripts\activate   # On Windows")
 
         print("\nThen run this program again.")
 

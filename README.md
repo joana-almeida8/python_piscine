@@ -26,6 +26,8 @@ This repository documents my progression through the Python Piscine modules.
 | Module 04 | — | File Operations & Persistence | File I/O, data preservation, structured storage, state management |
 | Module 05 | v2.0 | Enterprise Architecture | ABCs, Protocols, Pipeline Patterns, Fault Tolerance, Strategic Error Recovery |
 | Module 06 | v1.0 | Package Architecture | __init__.py (Namespacing), Absolute vs. Relative Imports, Circular Dependency Resolution |
+| Module 07 | v2.0 | DataDeck (Design Patterns) | Abstract Factory, Strategy, and Multiple Inheritance |
+| Module 08 | v3.0 | The Matrix (DevOps) | Virtual Environments, Dependency Management (Poetry), and Secrets Security |
 
 ---
 

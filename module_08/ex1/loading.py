@@ -1,12 +1,13 @@
 import sys
 import importlib
+from typing import Dict, Any
 
 
 if __name__ == "__main__":
     print("\nLOADING STATUS: Loading programs...")
     # List all modules intended to install
     packages = ["numpy", "pandas", "matplotlib", "requests"]
-    modules = {}
+    modules: Dict[str, Any] = {}
     module_description = ""
 
     print("\nChecking dependencies:")
@@ -35,7 +36,8 @@ if __name__ == "__main__":
 
         # Print error message indentifying the failed module and exit
         except ModuleNotFoundError:
-            print(f"[KO] {package} - Could not install")
+            print(f"[KO] {package} - Could not install\n"
+                  "Run 'pip install -r requirements.txt' or 'poetry install'")
             sys.exit(1)
 
     print("Analyzing Matrix data...")
@@ -54,6 +56,8 @@ if __name__ == "__main__":
     # Plot the original signal data
     plt.plot(structured_data["numbers"])
     # Plot the rolling mean line
+    structured_data["rolling_mean"] = structured_data["numbers"].\
+        rolling(window=50).mean()
     plt.plot(structured_data["rolling_mean"])
     # Save the generated visualization to the current environment path
     plt.savefig("matrix_analysis.png")

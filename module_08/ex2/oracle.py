@@ -14,6 +14,7 @@ if __name__ == "__main__":
     config_var = ["MATRIX_MODE", "DATABASE_URL", "API_KEY",
                   "LOG_LEVEL", "ZION_ENDPOINT"]
 
+    # Check if there any missing values for each variable
     missing = []
     for var in config_var:
         val = os.getenv(var)
@@ -23,16 +24,22 @@ if __name__ == "__main__":
         # Validate values for configuration variable
         else:
             if var == "MATRIX_MODE":
-                print(f"Mode: {os.getenv(val)}")
+                print(f"Mode: {val}")
             elif var == "DATABASE_URL":
                 print("Database: Connected to the local instance")
             elif var == "API_KEY":
                 print("API Access: Autheticated")
             elif var == "LOG_LEVEL":
-                print(f"Log Level: {os.getenv(val)}")
+                mode = os.getenv("MATRIX_MODE")
+                if mode == "production" and val == "DEBUG":
+                    warning = "WARNING (DEBUG suppressed for production)"
+                    print(f"Log Level: {warning}")
+                else:
+                    print(f"Log Level: {val}")
             elif var == "ZION_ENDPOINT":
                 print("Zion Network: Online")
 
+    # Print missing values
     if missing:
         print("ERROR: Missing values for the Environmental "
               f"Variables '{', '.join(missing)}'")
